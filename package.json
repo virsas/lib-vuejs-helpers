@@ -1,0 +1,38 @@
+{
+  "name": "@virsas/vue-helpers",
+  "version": "0.0.0",
+  "description": "Virsas - Vue3 helpers' library",
+  "author": "Stefan Moravcik <stefan@virsas.com>",
+  "license": "MIT",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --ext .js,.vue src",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "Virsas",
+    "Helpers",
+    "Vue 3",
+    "Vue"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/virsas/lib-vuejs-helpers.git"
+  },
+  "bugs": "https://github.com/virsas/lib-vuejs-helpers/issues",
+  "homepage": "https://github.com/virsas/lib-vuejs-helpers",
+  "engines": {
+    "node": ">= 12.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "eslint": "^8.10.0",
+    "eslint-plugin-vue": "^9.7.0",
+    "quasar": "^2.10.1",
+    "vue": "^3.2.41"
+  }
+}

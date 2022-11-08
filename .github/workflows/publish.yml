@@ -1,0 +1,89 @@
+name: Publish package
+
+on:
+  push:
+    branches:
+      - 'main'
+
+env:
+  MAJOR_VERSION: 1
+  MINOR_VERSION: 1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test the code
+        run: npm test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: 'https://registry.npmjs.org'
+      - name: Generate package.json file
+        run: |
+          cat > package.json << EOF
+          {
+            "name": "@virsas/vue-helpers",
+            "version": "$MAJOR_VERSION.$MINOR_VERSION.$GITHUB_RUN_NUMBER",
+            "description": "Virsas - Vue3 helpers' library",
+            "author": "Stefan Moravcik <stefan@virsas.com>",
+            "license": "MIT",
+            "main": "src/index.js",
+            "scripts": {
+              "lint": "eslint --ext .js,.vue src",
+              "test": "echo \"No test specified\" && exit 0"
+            },
+            "publishConfig": {
+              "access": "public"
+            },
+            "keywords": [
+              "Virsas",
+              "Helpers",
+              "Vue 3",
+              "Vue"
+            ],
+            "repository": {
+              "type": "git",
+              "url": "https://github.com/virsas/lib-vuejs-helpers.git"
+            },
+            "bugs": "https://github.com/virsas/lib-vuejs-helpers/issues",
+            "homepage": "https://github.com/virsas/lib-vuejs-helpers",
+            "engines": {
+              "node": ">= 12.0.0",
+              "npm": ">= 6.0.0"
+            },
+            "devDependencies": {
+              "@babel/eslint-parser": "^7.13.14",
+              "eslint": "^8.10.0",
+              "eslint-plugin-vue": "^9.7.0",
+              "quasar": "^2.10.1",
+              "vue": "^3.2.41"
+            }
+          }
+          EOF
+      - name: Install dependencies
+        run: npm ci
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.TOKEN_NPM }}
